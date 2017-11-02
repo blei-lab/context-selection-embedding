@@ -64,7 +64,7 @@ def get_model(model_param, session, config):
 
 
 
-def fit_emb(reviews, batch_feeder, config, save_path):
+def fit_emb(reviews, batch_feeder, config):
 
     do_log_save = False
     do_profiling = False
@@ -171,8 +171,6 @@ def fit_emb(reviews, batch_feeder, config, save_path):
                 
 
                 model = get_model(model_param, session, config)
-                save_file = save_path + ('iter%d' % step) + config_to_name(config) + '.pkl'
-                pickle.dump(dict(model=model, logg=train_logg), open(save_file, "wb"))
 
                 if do_log_save:
                     tf.train.Saver().save(session, log_save_path, step)
@@ -232,7 +230,7 @@ def evaluate_emb(reviews, batch_feeder, model, config):
         return dict(pos_llh=pos_llh, neg_llh=neg_llh)
 
 def sparse_array_feeder(batch): 
-    _, nz_ind, values = scipy.sparse.find(batch)
+    _, nz_ind, values = sparse.find(batch)
     return nz_ind, values
  
 

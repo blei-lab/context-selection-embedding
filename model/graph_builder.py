@@ -37,13 +37,6 @@ class GraphBuilder:
         cat_dist = tf.contrib.distributions.Categorical(probs=prob)
         sample = cat_dist.sample(nneg)
 
-        # sanity check
-        context_zero = tf.assert_equal(tf.gather(prob, context), 0.0)
-        other_prob = tf.assert_equal(tf.reduce_sum(tf.cast(tf.abs(prob - (1.0 / normalizer)) < 1e-6, tf.int32)), \
-                                     movie_size - ncontext)
-        with tf.control_dependencies([context_zero, other_prob]):
-            sample = tf.identity(sample)
-
         return sample
 
     def log_dist_prob(self, target, target_label, emb_score, config, zero_labels=False):
@@ -198,7 +191,9 @@ class GraphBuilder:
     def calculate_noisy_elbo(self, target, target_label, context, context_label, is_same_set, training, config):
 
         if is_same_set:
-            with tf.control_dependencies([tf.assert_greater(tf.shape(context)[0], 2)]):
+            # if is_same_set, the variable "context" here contains both the index of the target item and also indices of context items. 
+            # it need to has at least 2 elements, otherwise the target item has no context items, and such row should be removed.
+            with tf.control_dependencies([tf.assert_greater(tf.shape(context)[0], 1)]):
                 context = tf.identity(context)
 
         # generate configurations

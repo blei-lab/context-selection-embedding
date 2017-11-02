@@ -57,9 +57,9 @@ def logprob(logits, samples):
 
     logprob_cbs = logprob_unc - tf.expand_dims(logprob_non0, 1) # expand to samples
 
-    check_point = tf.assert_less(tf.reduce_mean(logprob_cbs), 0.001, data=[tf.reduce_mean(logprob_cbs), tf.reduce_mean(logits), tf.reduce_mean(samples)])
-    with tf.control_dependencies([check_point]):
-        logprob_cbs = tf.identity(logprob_cbs)
+    #check_point = tf.assert_less(tf.reduce_mean(logprob_cbs), 0.001, data=[tf.reduce_mean(logprob_cbs), tf.reduce_mean(logits), tf.reduce_mean(samples)])
+    #with tf.control_dependencies([check_point]):
+    #    logprob_cbs = tf.identity(logprob_cbs)
     
 
     return logprob_cbs 
@@ -135,9 +135,9 @@ def sample(logits, nsample):
     samples = samples * trunc_mask + trunc_flag 
 
 
-    check_point = tf.assert_greater(tf.reduce_mean(samples), 0.0, data=[tf.reduce_mean(logits), tf.reduce_mean(samples)])
-    with tf.control_dependencies([check_point]):
-        samples = tf.identity(samples)
+    #check_point = tf.assert_greater(tf.reduce_mean(samples), 0.0, data=[tf.reduce_mean(logits), tf.reduce_mean(samples)])
+    #with tf.control_dependencies([check_point]):
+    #    samples = tf.identity(samples)
     
     return samples
 

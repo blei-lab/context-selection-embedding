@@ -157,28 +157,23 @@ class CompactNet:
 
         logits = logits + b_logit
 
-        if is_same_set:
-            self.debug_var.append(h_fc1)
-            self.debug_var.append(h_fc2)
-            self.debug_var.append(logits)
-
-        # assert logits is not nan or -inf
         if is_same_set: # set the diagnal to be negative so that 1) diagnal element of a sample is always 0 2) it does not have gradient 
             logits = tf.matrix_set_diag(logits, tf.ones([ntarget]) * (-50.0))
 
-        check_point = tf.assert_greater(tf.reduce_mean(logits), -10000.0, data=[tf.reduce_mean(logits),  
-                                                                                tf.reduce_mean(context_scores), 
-                                                                                tf.reduce_mean(b_logit), 
-                                                                                tf.reduce_mean(feat),
-                                                                                tf.reduce_mean(self.W_fc1), 
-                                                                                tf.reduce_mean(self.W_fc2), 
-                                                                                tf.reduce_mean(self.W_fc3), 
-                                                                                tf.reduce_mean(self.b_fc1), 
-                                                                                tf.reduce_mean(self.b_fc2), 
-                                                                                tf.reduce_mean(self.b_fc3)
-                                                                                ])
-        with tf.control_dependencies([check_point]):
-            logits = tf.identity(logits)
+        # assert logits is not nan or -inf
+        #check_point = tf.assert_greater(tf.reduce_mean(logits), -10000.0, data=[tf.reduce_mean(logits),  
+        #                                                                        tf.reduce_mean(context_scores), 
+        #                                                                        tf.reduce_mean(b_logit), 
+        #                                                                        tf.reduce_mean(feat),
+        #                                                                        tf.reduce_mean(self.W_fc1), 
+        #                                                                        tf.reduce_mean(self.W_fc2), 
+        #                                                                        tf.reduce_mean(self.W_fc3), 
+        #                                                                        tf.reduce_mean(self.b_fc1), 
+        #                                                                        tf.reduce_mean(self.b_fc2), 
+        #                                                                        tf.reduce_mean(self.b_fc3)
+        #                                                                        ])
+        #with tf.control_dependencies([check_point]):
+        #    logits = tf.identity(logits)
 
         samples = cba.sample(logits, nsample) 
         logprob = cba.logprob(logits, samples)
