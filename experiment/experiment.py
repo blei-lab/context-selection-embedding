@@ -48,8 +48,6 @@ def load_data(dataset): # load ZIE data, drop attributes for ZIE
         trainset = trainset[flag.nonzero()[0], :]
         flag = np.squeeze(testset.sum(axis=1) >= 3)
         testset = testset[flag.nonzero()[0], :]
-
-        raise Exception('good code ')
     else:
         flag = np.sum(trainset > 0, axis=1) >= 3
         trainset = trainset[flag, :]
@@ -71,7 +69,7 @@ def embedding_experiment(config, dataset):
         trainset, testset = load_data(dataset)   
         batch_feeder = dense_array_feeder
 
-    elif dataset in ['safeway_group_nov']:
+    else:
         trainset, testset = load_data(dataset)   
         batch_feeder = sparse_array_feeder
 
