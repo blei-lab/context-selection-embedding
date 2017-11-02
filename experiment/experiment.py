@@ -95,9 +95,9 @@ def embedding_experiment(config, dataset):
 if __name__ == '__main__':
 
     dataset = 'movie'
-    max_iter = 500
+    max_iter = 20000
     dist = 'binomial' #  N=3 for binomial distribution
-    nprint = 50
+    nprint = 2000
 
     config = dict(
                   # the dimensionality of the embedding vectors  

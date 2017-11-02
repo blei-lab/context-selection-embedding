@@ -1,3 +1,5 @@
+from __future__ import division 
+
 import numpy as np
 from scipy import sparse 
 import pickle
@@ -36,8 +38,8 @@ def rand_data():
     
     feature = np.random.rand(n_rows, n_feat)
     
-    trainset = dict(scores=sparse.csr_matrix(score_mat[0:(n_rows / 2)]), atts=feature[0:(n_rows / 2)]) 
-    testset = dict(scores=sparse.csr_matrix(score_mat[(n_rows / 2):]), atts=feature[(n_rows / 2):]) 
+    trainset = dict(scores=sparse.csr_matrix(score_mat[0:(n_rows // 2)]), atts=feature[0:(n_rows // 2)]) 
+    testset = dict(scores=sparse.csr_matrix(score_mat[(n_rows // 2):]), atts=feature[(n_rows // 2):]) 
 
     return dict(trainset=trainset, testset=testset)
 
