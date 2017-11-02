@@ -77,7 +77,7 @@ def embedding_experiment(config, dataset):
 
     # fit an emb model
     print('Training set has size: ', trainset.shape)
-    emb_model, logg = fit_emb(trainset, batch_feeder, config, save_path=data_path + dataset + '/splits/')
+    emb_model, logg = fit_emb(trainset, batch_feeder, config)
     print('Training done!')
 
     print('Test set has size: ', testset.shape)
